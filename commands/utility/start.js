@@ -1,3 +1,4 @@
+const { ChannelType } = require('discord.js')
 module.exports = {
     data: {
         name: 'start',
@@ -12,19 +13,18 @@ module.exports = {
         ],
     },
     async execute(interaction) {
+
         try {
             const userToPing = interaction.options.getUser('user');
             const guild = interaction.guild;
 
-            if (!guild.me || !guild.me.permissions.has('MANAGE_CHANNELS')) {
-                return interaction.reply("I don't have permission to create channels.");
-            }
-
-            const channel = await guild.channels.create('rand', {
-                type: 'text',
+            const channel = await guild.channels.create({
+                name: 'test',
+                type: ChannelType.GuildText,
+                topic: `This channel was created by ${interaction.user.tag}`,
             });
-
             await channel.send(`Channel created! ${interaction.user.toString()} and ${userToPing.toString()}`);
+
 
             await interaction.reply('Command executed successfully!');
         } catch (error) {
